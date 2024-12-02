@@ -49,3 +49,30 @@ void consultarProdutos(const vector<Produto>& produtos) {
              << ", Preço: R$ " << produto.preco << endl;
     }
 }
+
+int main() {
+    vector<Produto> produtos; // Vetor para armazenar os produtos
+    int opcao;
+
+    do {
+        exibirMenu();
+        cin >> opcao;
+
+        switch (opcao) {
+            case 1:
+                cadastrarProduto(produtos);
+                break;
+            case 2:
+                consultarProdutos(produtos);
+                break;
+            case 3:
+                cout << "Saindo do programa..." << endl;
+                break;
+            default:
+                cout << "Opção inválida! Tente novamente." << endl;
+        }
+    } while (opcao != 3);
+
+    return 0;
+}
+
