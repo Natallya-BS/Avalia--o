@@ -34,3 +34,18 @@ void cadastrarProduto(vector<Produto>& produtos) {
     produtos.push_back(produto);
     cout << "Produto cadastrado com sucesso!" << endl;
 }
+
+// Função para consultar produtos
+void consultarProdutos(const vector<Produto>& produtos) {
+    if (produtos.empty()) {
+        cout << "\nNenhum produto cadastrado!" << endl;
+        return;
+    }
+
+    cout << "\n===== Lista de Produtos =====" << endl;
+    for (const auto& produto : produtos) {
+        cout << "ID: " << produto.id
+             << ", Nome: " << produto.nome
+             << ", Preço: R$ " << produto.preco << endl;
+    }
+}
