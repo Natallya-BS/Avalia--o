@@ -7,20 +7,21 @@ using namespace std;
 struct Produto {
     int id;
     string nome;
+    int quantidade; // Adicionado para controlar o estoque
     float preco;
 };
 
-// Função menu
-
+// Função para exibir o menu
 void exibirMenu() {
     cout << "\n===== Menu =====" << endl;
     cout << "1. Cadastrar Produto" << endl;
     cout << "2. Consultar Produtos" << endl;
-    cout << "3. Sair" << endl;
-    cout << "Escolha uma opção: ";
+    cout << "3. Vender Produto" << endl;
+    cout << "4. Sair" << endl;
+    cout << "Escolha uma opcao: ";
 }
-// Função de cadastro do produto 
 
+// Função para cadastrar um produto
 void cadastrarProduto(vector<Produto>& produtos) {
     Produto produto;
     cout << "\nDigite o ID do produto: ";
@@ -28,11 +29,47 @@ void cadastrarProduto(vector<Produto>& produtos) {
     cin.ignore(); // Limpar o buffer
     cout << "Digite o nome do produto: ";
     getline(cin, produto.nome);
+    cout << "Digite a quantidade do produto: ";
+    cin >> produto.quantidade;
     cout << "Digite o preço do produto: ";
     cin >> produto.preco;
 
     produtos.push_back(produto);
     cout << "Produto cadastrado com sucesso!" << endl;
+}
+
+// Função para vender um produto
+void venderProduto(vector<Produto>& produtos) {
+    if (produtos.empty()) {
+        cout << "\nNenhum produto disponível para venda!" << endl;
+        return;
+    }
+
+    int id, quantidadeVenda;
+    cout << "\nDigite o ID do produto a vender: ";
+    cin >> id;
+
+    bool encontrado = false;
+    for (auto& produto : produtos) {
+        if (produto.id == id) {
+            encontrado = true;
+            cout << "Quantidade disponível de '" << produto.nome << "': " << produto.quantidade << endl;
+            cout << "Digite a quantidade a vender: ";
+            cin >> quantidadeVenda;
+
+            if (quantidadeVenda > produto.quantidade) {
+                cout << "Erro: Quantidade insuficiente em estoque." << endl;
+            } else {
+                produto.quantidade -= quantidadeVenda;
+                cout << "Venda concluída! Quantidade restante de '" << produto.nome << "': " << produto.quantidade << endl;
+            }
+            break;
+        }
+    }
+
+    if (!encontrado) {
+        cout << "Produto com ID " << id << " não encontrado." << endl;
+    }
 }
 
 // Função para consultar produtos
@@ -46,12 +83,13 @@ void consultarProdutos(const vector<Produto>& produtos) {
     for (const auto& produto : produtos) {
         cout << "ID: " << produto.id
              << ", Nome: " << produto.nome
+             << ", Quantidade: " << produto.quantidade
              << ", Preço: R$ " << produto.preco << endl;
     }
 }
 
 int main() {
-    vector<Produto> produtos; // Vetor para armazenar os produtos
+    vector<Produto> produtos;
     int opcao;
 
     do {
@@ -66,13 +104,15 @@ int main() {
                 consultarProdutos(produtos);
                 break;
             case 3:
+                venderProduto(produtos);
+                break;
+            case 4:
                 cout << "Saindo do programa..." << endl;
                 break;
             default:
-                cout << "Opção inválida! Tente novamente." << endl;
+                cout << "Opcao inválida! Tente novamente." << endl;
         }
-    } while (opcao != 3);
+    } while (opcao != 4);
 
     return 0;
 }
-
